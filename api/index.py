@@ -24,6 +24,10 @@ def delta():
 
     try:
         link_info_response = requests.get(f"https://api-gateway.platoboost.com/v1/authenticators/8/{id}")
+        print(f"Request URL: https://api-gateway.platoboost.com/v1/authenticators/8/{id}")
+        print(f"Response Status Code: {link_info_response.status_code}")
+        print(f"Response Content: {link_info_response.content}")
+
         if link_info_response.status_code != 200:
             return jsonify({"success": False, "error": "Failed to get link info", "status_code": link_info_response.status_code}), 502
         
@@ -35,6 +39,9 @@ def delta():
             return jsonify({"success": True, "key": link_info.get("key"), "time_taken": f"{time_taken:.2f}"})
         
         session_data_response = requests.post(f"https://api-gateway.platoboost.com/v1/sessions/auth/8/{id}", json={"captcha": "", "type": ""})
+        print(f"Session Data Response Status Code: {session_data_response.status_code}")
+        print(f"Session Data Response Content: {session_data_response.content}")
+
         if session_data_response.status_code != 200:
             return jsonify({"success": False, "error": "Failed to start session", "status_code": session_data_response.status_code}), 502
 
@@ -42,12 +49,19 @@ def delta():
         
         time.sleep(5)
         update_session_response = requests.put(f"https://api-gateway.platoboost.com/v1/sessions/auth/8/{id}/ui7c")
+        print(f"Update Session Response Status Code: {update_session_response.status_code}")
+        print(f"Update Session Response Content: {update_session_response.content}")
+
         if update_session_response.status_code != 200:
             return jsonify({"success": False, "error": "Failed to update session", "status_code": update_session_response.status_code}), 502
 
         response = update_session_response.json()
         
         link_info_response1 = requests.get(f"https://api-gateway.platoboost.com/v1/authenticators/8/{id}")
+        print(f"Second Link Info Request URL: https://api-gateway.platoboost.com/v1/authenticators/8/{id}")
+        print(f"Second Link Info Response Status Code: {link_info_response1.status_code}")
+        print(f"Second Link Info Response Content: {link_info_response1.content}")
+
         if link_info_response1.status_code != 200:
             return jsonify({"success": False, "error": "Failed to get updated link info", "status_code": link_info_response1.status_code}), 502
         

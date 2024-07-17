@@ -4,6 +4,10 @@ import time
 
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return 'gauravv._.'
+
 @app.route('/delta', methods=['GET'])
 def delta():
     start_time = time.time()  # Record start time
